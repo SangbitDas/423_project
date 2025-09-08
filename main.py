@@ -91,6 +91,16 @@ DESPAWN_Y =player["y"] + 1000
 COLLIDE_Y_THRESHOLD = 30.0
 COLLIDE_X_THRESHOLD = 40.0
 
+combo_flag = 0
+combo_start_time = 0.0 
+COMBO_WINDOW_S = 3
+
+two_x_flag = False
+two_x_time = 0.0
+MULTIPLIER_DURATION_S = 10.0
+combo_multi = 5
+
+
 
 
 
@@ -407,29 +417,71 @@ def keyboardListener(key, x, y):
     global enemy_timer, enemy_is_jumping, enemy_jump_velocity, enemy_is_sliding, enemy_slide_timer, enemy_decision_cooldown, enemy
     global magnet_spin_angle, magnets_collected, magnet_active, magnet_timer
     global hoverboard_tilt, hoverboard_bob, hoverboard_fast_mode,last_spawn_time,game_over
-    
+    global combo_flag, combo_start_time, two_x_flag, two_x_time, COMBO_WINDOW_S, MULTIPLIER_DURATION_S
+
+
+    if key in [b'a', b'A',b'd', b'D']:
+        if combo_flag != 1:
+            combo_flag = 0
+            combo_start_time = 0.0
+    elif key in [b's', b'S']:
+        if combo_flag != 2:
+            combo_flag = 0
+            combo_start_time = 0.0
+    else:
+        combo_flag = 0
+        combo_start_time = 0.0
+
     if key in [b'a', b'A']:
+        a = time.time()
         if player["lane"] < NUM_LANES - 1:
             player["lane"] += 1
             player["x"] = LANE_X[player["lane"]]
 
+            if combo_flag == 1 and combo_start_time != 0.0 and (a - combo_start_time) <= COMBO_WINDOW_S:
+                combo_flag = 2
+                
+                print("2. pressed lane switch")
+            else:
+                combo_flag = 0
+                combo_start_time = 0.0
+
+
     elif key in [b'd', b'D']:
+        a = time.time()
         if player["lane"] > 0:
             player["lane"] -= 1
             player["x"] = LANE_X[player["lane"]]
+
+            if (combo_flag == 1) and (combo_start_time != 0.0) and ((a - combo_start_time) <= COMBO_WINDOW_S):
+                combo_flag = 2
+                print("2. pressed lane switch")
+            else:
+                combo_flag = 0
+                combo_start_time = 0.0
+
 
     elif key in [b' ', b'SPACE']:
         if is_hoverboard:
             
             hoverboard_fast_mode = not hoverboard_fast_mode
-                
-              
             print(f"Hoverboard Fast Mode: {'ON' if hoverboard_fast_mode else 'OFF'}")
+
+            combo_start_time = time.time()
+            combo_flag = 1    
+            print("1. pressed space")
+
+
         elif not is_jumping:
             is_jumping = True
             jump_velocity = JUMP_SPEED
+
+            combo_start_time = time.time()
+            combo_flag = 1    
+            print("1. pressed space")
     
     elif key in [b's', b'S']:
+        a = time.time()
         if is_hoverboard:
             
             if not is_sliding:
@@ -437,11 +489,41 @@ def keyboardListener(key, x, y):
                 slide_timer = slide_duration
                 player["height"] = SLIDE_HEIGHT
                 player["z"] = SLIDE_Z
+                if combo_flag == 2 and combo_start_time != 0.0:
+                    print(a - combo_start_time)
+                    if a - combo_start_time <= COMBO_WINDOW_S:
+                        
+                        two_x_flag = True
+                        two_x_time = time.time()
+                        combo_flag = 0
+                        combo_start_time = 0.0
+                        
+                        print("3. pressed slide")
+                    else:
+                        combo_flag = 0
+                        combo_start_time = 0.0
+
+                
         elif not is_sliding and not is_jumping:
             is_sliding = True
             slide_timer = slide_duration
             player["height"] = SLIDE_HEIGHT
             player["z"] = SLIDE_Z
+
+            if combo_flag == 2 and combo_start_time != 0.0:
+                print("here")
+                print(a - combo_start_time)
+                if a - combo_start_time <= COMBO_WINDOW_S:
+                        
+                    two_x_flag = True
+                    two_x_time = time.time()
+                    combo_flag = 0
+                    combo_start_time = 0.0
+                        
+                    print("3. pressed slide")
+                else:
+                    combo_flag = 0
+                    combo_start_time = 0.0    
     
     
     elif key in [b'f', b'F']:
@@ -1408,6 +1490,7 @@ def update_game(dt):
     global enemy_is_jumping, enemy_jump_velocity, enemy_is_sliding, enemy_slide_timer
     global is_hoverboard, hoverboard_tilt, hoverboard_bob,hoverboard_fast_mode
     global forward_speed, game_over
+    global combo_multi, two_x_time, two_x_flag, MULTIPLIER_DURATION_S
 
    
     
@@ -1579,7 +1662,13 @@ def update_game(dt):
     
     current_speed = forward_speed * (2.0 if hoverboard_fast_mode else 1.0)
     distance_traveled += current_speed * dt
-    score = int(distance_traveled // 10)
+    
+    base_score = int(distance_traveled // 10)
+    if two_x_time != 0.0:
+        score = base_score * combo_multi
+    else:
+        score = base_score
+
     road_scroll += current_speed * dt
 
     
@@ -1700,7 +1789,10 @@ def update_game(dt):
         if not enemy_is_jumping and not enemy_is_sliding:
             enemy["z"] = GROUND_Z
 
-                
+    if two_x_flag and two_x_time != 0.0:
+        if time.time() - two_x_time > MULTIPLIER_DURATION_S:
+            two_x_flag = False
+            two_x_time = 0.0                
         
 
 
@@ -1816,6 +1908,10 @@ def showScreen():
 
     glColor3f(1, 1, 1)
     draw_text_line(10, 650, "Press 'R' to restart")
+
+    if two_x_time != 0:
+        glColor3f(1.0, 0.5, 0.0)   # orange
+        draw_text_line(590, 680, "5x COMBO ACTIVE!",GLUT_BITMAP_TIMES_ROMAN_24)
 
     if hoverboard_fast_mode:
         glColor3f(1, 1, 1)
