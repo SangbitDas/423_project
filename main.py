@@ -545,6 +545,90 @@ def draw_obstacle(obs):
 
     glPopMatrix()
 
+def spawn_magnet():
+    """Spawn a magnet randomly in one lane, ensuring it does not overlap coins."""
+    lane = random.randint(0, NUM_LANES - 1)
+    y_pos = SPAWN_Y - random.uniform(0.0, 300.0)
+    
+    can_spawn = True
+    
+    for c in coins:
+        if c["lane"] == lane and abs(c["y"] - y_pos) < 150:  
+            can_spawn = False 
+            break
+    
+    if can_spawn:
+        magnet = {
+            "lane": lane,
+            "x": LANE_X[lane],
+            "y": y_pos,
+            "z": 50,
+            "collision_z": -15.0,
+            "size": MAGNET_SIZE
+        }
+        magnets.append(magnet)
+        print("Spawned magnet at lane", lane, "y:", y_pos)
+
+
+def draw_magnet(m):
+    """Draw a horseshoe magnet."""
+    global magnet_spin_angle
+    x, y, z, size = m["x"], m["y"], m["z"], m["size"]
+    
+    glPushMatrix()
+    glTranslatef(x, y, z+size/2)
+
+    arm_height = size
+    
+    glTranslatef(0, 0, -arm_height / 2)
+    
+    glRotatef(-30, 0, 1, 0) 
+    
+    glRotatef(magnet_spin_angle, 1, 0, 1)
+    
+    
+    arm_width = size * 0.25
+    gap = size * 0.5
+
+    arm_width = size * 0.25
+    gap = size * 0.5
+
+    
+    glPushMatrix()
+    glTranslatef(-gap/2, 0, 0)
+    glScalef(arm_width, 20, arm_height)
+    glColor3f(1.0, 0.0, 0.0)  
+    glutSolidCube(1)
+    glPopMatrix()
+
+    
+    glPushMatrix()
+    glTranslatef(gap/2, 0, 0)
+    glScalef(arm_width, 20, arm_height)
+    glColor3f(1.0, 0.0, 0.0)  
+    glutSolidCube(1)
+    glPopMatrix()
+
+    
+    glPushMatrix()
+    glTranslatef(0, 0, -arm_height/2)
+    glScalef(gap + arm_width, 20, arm_width)
+    glColor3f(0.204, 0.659, 0.922)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    
+    for side in [-1, 1]:
+        glPushMatrix()
+        glTranslatef(side * gap/2, 0, -arm_height/2 + 5)
+        glScalef(arm_width, 20, arm_width)
+        glColor3f(0.204, 0.659, 0.922)
+        glutSolidCube(1)
+        glPopMatrix()
+
+    glPopMatrix()
+
+
 
 def idle():
     update_game()
