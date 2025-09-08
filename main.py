@@ -714,12 +714,12 @@ def idle():
 def draw_lamp_head():
     
     glColor3f(1.0, 0.5, 0.0)   
-    glutSolidSphere(12, 16, 16)
+    gluSphere(gluNewQuadric(),12, 16, 16)
 
     
     glTranslatef(0, 0, 10)
     glColor3f(1.0, 1.0, 0.0)   
-    glutSolidSphere(8, 16, 16)
+    gluSphere(gluNewQuadric(),8, 16, 16)
 
     
     glTranslatef(0, 0, 10)
@@ -805,15 +805,13 @@ def draw_hoverboard():
         
         glColor3f(1.0, 0.2, 0.0)  
         glPushMatrix()
-        glScalef(board_length + 8, board_width + 8, board_thickness + 4)  
-        glutWireCube(1)
+        glScalef(board_length + 8, board_width + 8, board_thickness + 4)
         glPopMatrix()
     else:
         
         glColor3f(0.0, 0.8, 1.0)  
         glPushMatrix()
-        glScalef(board_length + 4, board_width + 4, board_thickness + 2)  
-        glutWireCube(1)
+        glScalef(board_length + 4, board_width + 4, board_thickness + 2)
         glPopMatrix()
     
     
@@ -866,7 +864,7 @@ def draw_hoverboard():
         
         glColor3f(0.4, 0.4, 0.4)
         glTranslatef(wheel_width/2, 0, 0)
-        glutSolidSphere(4, 8, 8)
+        gluSphere(gluNewQuadric(),4, 8, 8)
         
         glPopMatrix()
     
@@ -884,12 +882,12 @@ def draw_hoverboard():
             
             glColor3f(1.0, 0.5, 0.0)  
             glTranslatef(0, 0, 20)
-            glutSolidSphere(10, 8, 8)  
+            gluSphere(gluNewQuadric(),10, 8, 8)  
         else:
             
             glColor3f(0.0, 0.6, 1.0)
             glTranslatef(0, 0, 20)
-            glutSolidSphere(6, 8, 8)
+            gluSphere(gluNewQuadric(),6, 8, 8)
         glPopMatrix()
     
     
@@ -897,7 +895,7 @@ def draw_hoverboard():
         glPushMatrix()
         glTranslatef(0, side * (board_length/2 - 10), board_thickness/2 + 5)
         glColor3f(1.0, 1.0, 0.0)  
-        glutSolidSphere(3, 6, 6)
+        gluSphere(gluNewQuadric(),3, 6, 6)
         glPopMatrix()
     
     glPopMatrix()
@@ -997,7 +995,7 @@ def draw_player():
             
             glTranslatef(0, 0, leg_length+32)
             glColor3f(0.0, 0.0, 0.0)  
-            glutSolidSphere(12, 10, 10)
+            gluSphere(gluNewQuadric(),12, 10, 10)
             glPopMatrix()
 
         
@@ -1035,20 +1033,20 @@ def draw_player():
             
             glTranslatef(0, 0, arm_length)
             glColor3f(0.9, 0.75, 0.65)
-            glutSolidSphere(8, 10, 10)
+            gluSphere(gluNewQuadric(),8, 10, 10)
             glPopMatrix()
 
         
         glPushMatrix()
         glTranslatef(0, torso_height/2 + 10, 15+50)  
         glColor3f(0.9, 0.75, 0.65)  
-        glutSolidSphere(head_radius, 12, 12)
+        gluSphere(gluNewQuadric(),head_radius, 12, 12)
         
         
         glColor3f(0.55, 0.27, 0.07)
         glPushMatrix()
         glScalef(2.5, 2.5, 0.2)
-        glutSolidSphere(head_radius + 5, 12, 12)
+        gluSphere(gluNewQuadric(),head_radius + 5, 12, 12)
         glPopMatrix()
         glTranslatef(0, 0, 8)
         gluCylinder(gluNewQuadric(), 15, 12, 12, 12, 2)
@@ -1073,7 +1071,7 @@ def draw_player():
             
             glTranslatef(0, 0, leg_length)
             glColor3f(0.0, 0.0, 0.0)  
-            glutSolidSphere(12, 10, 10)
+            gluSphere(gluNewQuadric(),12, 10, 10)
             glPopMatrix()
 
         
@@ -1111,20 +1109,20 @@ def draw_player():
             
             glTranslatef(0, 0, arm_length)
             glColor3f(0.9, 0.75, 0.65)
-            glutSolidSphere(8, 10, 10)
+            gluSphere(gluNewQuadric(),8, 10, 10)
             glPopMatrix()
 
         
         glPushMatrix()
         glTranslatef(0, torso_height/2 + 10, 15)  
         glColor3f(0.9, 0.75, 0.65)  
-        glutSolidSphere(head_radius, 12, 12)
+        gluSphere(gluNewQuadric(),head_radius, 12, 12)
         
         
         glColor3f(0.55, 0.27, 0.07)
         glPushMatrix()
         glScalef(2.5, 2.5, 0.2)
-        glutSolidSphere(head_radius + 5, 12, 12)
+        gluSphere(gluNewQuadric(),head_radius + 5, 12, 12)
         glPopMatrix()
         glTranslatef(0, 0, 8)
         gluCylinder(gluNewQuadric(), 15, 12, 12, 12, 2)
@@ -1145,7 +1143,7 @@ def draw_player():
         gluCylinder(gluNewQuadric(), 8, 6, leg_length, 8, 2)
         glTranslatef(0, 0, leg_length)
         glColor3f(0.0, 0.0, 0.0)  
-        glutSolidSphere(12, 10, 10)
+        gluSphere(gluNewQuadric(),12, 10, 10)
         glPopMatrix()
 
         
@@ -1157,7 +1155,7 @@ def draw_player():
         gluCylinder(gluNewQuadric(), 8, 6, leg_length, 8, 2)
         glTranslatef(0, 0, leg_length)
         glColor3f(0.0, 0.0, 0.0)  
-        glutSolidSphere(12, 10, 10)
+        gluSphere(gluNewQuadric(),12, 10, 10)
         glPopMatrix()
 
         
@@ -1198,7 +1196,7 @@ def draw_player():
             gluCylinder(gluNewQuadric(), 5, 4, arm_length, 8, 2)
             glTranslatef(0, 0, arm_length)
             glColor3f(0.9, 0.75, 0.65)
-            glutSolidSphere(8, 10, 10)  
+            gluSphere(gluNewQuadric(),8, 10, 10)  
             glPopMatrix()
 
         
@@ -1212,14 +1210,14 @@ def draw_player():
         glPushMatrix()
         glTranslatef(0, 0, leg_length + torso_height + neck_height + head_radius)
         glColor3f(0.9, 0.75, 0.65)  
-        glutSolidSphere(head_radius, 12, 12)
+        gluSphere(gluNewQuadric(),head_radius, 12, 12)
         
         
         glColor3f(0.55, 0.27, 0.07)  
         
         glPushMatrix()
         glScalef(2.5, 2.5, 0.2)
-        glutSolidSphere(head_radius + 5, 12, 12)
+        gluSphere(gluNewQuadric(),head_radius + 5, 12, 12)
         glPopMatrix()
         
         glTranslatef(0, 0, 10)
@@ -1289,7 +1287,7 @@ def draw_enemy():
             
             glTranslatef(0, 0, leg_length)
             glColor3f(0.0, 0.0, 0.0)  
-            glutSolidSphere(12, 10, 10)
+            gluSphere(gluNewQuadric(),12, 10, 10)
             glPopMatrix()
 
         
@@ -1327,20 +1325,20 @@ def draw_enemy():
             
             glTranslatef(0, 0, arm_length)
             glColor3f(0.9, 0.75, 0.65)
-            glutSolidSphere(8, 10, 10)
+            gluSphere(gluNewQuadric(),8, 10, 10)
             glPopMatrix()
 
         
         glPushMatrix()
         glTranslatef(0, torso_height/2 + 10, 15)  
         glColor3f(0.9, 0.75, 0.65)  
-        glutSolidSphere(head_radius, 12, 12)
+        gluSphere(gluNewQuadric(),head_radius, 12, 12)
         
         
         glColor3f(0.55, 0.27, 0.07)
         glPushMatrix()
         glScalef(2.5, 2.5, 0.2)
-        glutSolidSphere(head_radius + 5, 12, 12)
+        gluSphere(gluNewQuadric(),head_radius + 5, 12, 12)
         glPopMatrix()
         glTranslatef(0, 0, 8)
         gluCylinder(gluNewQuadric(), 15, 12, 12, 12, 2)
@@ -1361,7 +1359,7 @@ def draw_enemy():
         gluCylinder(gluNewQuadric(), 8, 6, leg_length, 8, 2)
         glTranslatef(0, 0, leg_length)
         glColor3f(0.0, 0.0, 0.0)  
-        glutSolidSphere(12, 10, 10)
+        gluSphere(gluNewQuadric(),12, 10, 10)
         glPopMatrix()
 
         
@@ -1373,7 +1371,7 @@ def draw_enemy():
         gluCylinder(gluNewQuadric(), 8, 6, leg_length, 8, 2)
         glTranslatef(0, 0, leg_length)
         glColor3f(0.0, 0.0, 0.0)  
-        glutSolidSphere(12, 10, 10)
+        gluSphere(gluNewQuadric(),12, 10, 10)
         glPopMatrix()
 
         
@@ -1414,7 +1412,7 @@ def draw_enemy():
             gluCylinder(gluNewQuadric(), 5, 4, arm_length, 8, 2)
             glTranslatef(0, 0, arm_length)
             glColor3f(0.9, 0.75, 0.65)
-            glutSolidSphere(8, 10, 10)  
+            gluSphere(gluNewQuadric(),8, 10, 10)  
             glPopMatrix()
 
         
@@ -1428,14 +1426,14 @@ def draw_enemy():
         glPushMatrix()
         glTranslatef(0, 0, leg_length + torso_height + neck_height + head_radius)
         glColor3f(0.9, 0.75, 0.65)  
-        glutSolidSphere(head_radius, 12, 12)
+        gluSphere(gluNewQuadric(),head_radius, 12, 12)
 
         
         glColor3f(0.55, 0.27, 0.07)  
         
         glPushMatrix()
         glScalef(2.5, 2.5, 0.2)
-        glutSolidSphere(head_radius + 5, 12, 12)
+        gluSphere(gluNewQuadric(),head_radius + 5, 12, 12)
         glPopMatrix()
         
         glTranslatef(0, 0, 10)
@@ -1938,9 +1936,7 @@ def main():
     glutInitWindowPosition(0, 0)
     wind = glutCreateWindow(b"3D Endless Runner - Feature 1")
 
-    
-    glEnable(GL_DEPTH_TEST)
-    glClearColor(0.1, 0.1, 0.12, 1.0)
+
 
     glutDisplayFunc(showScreen)
     glutKeyboardFunc(keyboardListener)
