@@ -2,11 +2,9 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
-# Camera-related variables
-camera_pos = (0,500,500)
 
-fovY = 120  # Field of view
-GRID_LENGTH = 600  # Length of grid lines
+camera_pos = (0,500,500)
+fovY = 120
 
 def keyboardListener(key, x, y):
     pass
@@ -26,9 +24,9 @@ def setupCamera():
     glLoadIdentity()
 
     x, y, z = camera_pos
-    gluLookAt(x, y, z,  # Camera position
-              0, 0, 0,  # Look-at target
-              0, 0, 1)  # Up vector (z-axis)
+    gluLookAt(x, y, z,
+              0, 0, 0,
+              0, 0, 1)
 
 
 def idle():
@@ -36,30 +34,25 @@ def idle():
 
 
 def showScreen():
-    # Clear color and depth buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-    glLoadIdentity()  # Reset modelview matrix
-    glViewport(0, 0, 1000, 800)  # Set viewport size
-
-    # Swap buffers for smooth rendering (double buffering)
+    glLoadIdentity()
+    glViewport(0, 0, 1000, 800)
     glutSwapBuffers()
 
-
-# Main function to set up OpenGL window and loop
 def main():
     glutInit()
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)  # Double buffering, RGB color, depth test
-    glutInitWindowSize(1000, 800)  # Window size
-    glutInitWindowPosition(0, 0)  # Window position
-    wind = glutCreateWindow(b"3D OpenGL Intro")  # Create the window
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
+    glutInitWindowSize(1000, 800)
+    glutInitWindowPosition(0, 0)
+    wind = glutCreateWindow(b"3D OpenGL Intro")
 
-    glutDisplayFunc(showScreen)  # Register display function
-    glutKeyboardFunc(keyboardListener)  # Register keyboard listener
+    glutDisplayFunc(showScreen)
+    glutKeyboardFunc(keyboardListener)
     glutSpecialFunc(specialKeyListener)
     glutMouseFunc(mouseListener)
-    glutIdleFunc(idle)  # Register the idle function to move the bullet automatically
+    glutIdleFunc(idle)
 
-    glutMainLoop()  # Enter the GLUT main loop
+    glutMainLoop()
 
 if __name__ == "__main__":
     main()
